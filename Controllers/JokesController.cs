@@ -11,34 +11,40 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace JokesWebApp.Controllers
 {
+    // Takes care of /Jokes path
     public class JokesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
+        // dependency injection
         public JokesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Jokes
+        // returns view for /Jokes
         public async Task<IActionResult> Index()
         {
             return View(await _context.Joke.ToListAsync());
         }
 
         // GET: Jokes/ShowSearchForm
+        // returns view for Jokes/ShowSearchForm
         public async Task<IActionResult> ShowSearchForm()
         {
             return View();
         }
 
         // POST: Jokes/ShowSearchResults
+        // returns view for Jokes/ShowSearchResults
         public async Task<IActionResult> ShowSearchResults(String SearchPhrase)
         {
             return View("Index", await _context.Joke.Where( j => j.JokeQuestion.Contains(SearchPhrase) ).ToListAsync());
         }
 
         // GET: Jokes/Details/5
+        // returns view for a joke specified with id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -57,6 +63,7 @@ namespace JokesWebApp.Controllers
         }
 
         // GET: Jokes/Create
+        // returns view for Jokes/Create
         [Authorize]
         public IActionResult Create()
         {
